@@ -1,6 +1,5 @@
 Dari hasil pembelajaran hari ini yaitu tentang Software Testing Fundamental terdapat beberapa pembahasan diantaranya
 
-Pengertian dan pentingnya software testing
 Menurut standar ANSI/IEEE 1059 software testing adalah sebuah proses menganalisis item perangkat lunak untuk mendeteksi perbedaan antara kondisi yang sekarang dengan kondisi yang akan diperlukan untuk mengevaluasi fitur item perangkat lunak
 Terdapat beberapa alasan software testing menjadi penting yaitu menghemat uang/pengeluaran, menjamin kualitas produk, menjaga keamanan produk, dan meningkatnya kepuasan konsumen/pelanggan
 
