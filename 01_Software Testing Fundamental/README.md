@@ -1,19 +1,12 @@
 Dari hasil pembelajaran hari ini yaitu tentang Software Testing Fundamental terdapat beberapa pembahasan diantaranya
 
-Pengertian software testing
+Pengertian dan pentingnya software testing
 Menurut standar ANSI/IEEE 1059 software testing adalah sebuah proses menganalisis item perangkat lunak untuk mendeteksi perbedaan antara kondisi yang sekarang dengan kondisi yang akan diperlukan untuk mengevaluasi fitur item perangkat lunak
-
-Pentingnya software testing
 Terdapat beberapa alasan software testing menjadi penting yaitu menghemat uang/pengeluaran, menjamin kualitas produk, menjaga keamanan produk, dan meningkatnya kepuasan konsumen/pelanggan
 
-Platform testing
-Terdapat 4 platform testing diantaranya API, WEB, MOBILE, DESKTOP
-1. API adalah definisi dan protokol untuk membangun dan mengintegrasikan aplikasi software
-2. WEB adalah sekumpulan halaman yang berisi informasi tertentu yang dapat di akses menggunakan internet
-3. MOBILE di bedakan menjadi 2 yaitu android dan IOS
-4. DESKTOP contoh aplikasi yang ada di desktop adalah code editor, video player, dan lain-lain
-
-Type software testing
+Platform dan type software testing
+Terdapat 4 platform testing diantaranya API, WEB, MOBILE, DESKTOP.
+Sedangkan untuk Type software testing diantaranya:
 1. Fungsional Testing contohnya seperti manual, automate
 2. Non fungsional testing contohnya seperti performance testing
 3. Maintance contohnya Regression testing
