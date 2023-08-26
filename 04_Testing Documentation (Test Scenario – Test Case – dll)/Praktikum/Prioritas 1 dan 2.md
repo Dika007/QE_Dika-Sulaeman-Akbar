@@ -1,3 +1,3 @@
 link tugas Prioritas 1 dan 2
 
-https://docs.google.com/spreadsheets/d/1AvULEa7Y_pFLUpEBDoWhE-aeR5KiVeUAhNKe4zMncNE/edit#gid=930815656
+https://docs.google.com/spreadsheets/d/1pY9JLN09bqRaGyO5mXzGKDwXjpTciKurTDDu8F-Azxg/edit?usp=sharing
