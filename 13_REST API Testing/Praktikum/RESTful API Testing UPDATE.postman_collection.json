@@ -1,0 +1,2591 @@
+{
+	"info": {
+		"_postman_id": "e2d850b5-5ba1-4d77-b983-70a80aa8cd95",
+		"name": "RESTful API Testing UPDATE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29109026"
+	},
+	"item": [
+		{
+			"name": "Positive",
+			"item": [
+				{
+					"name": "Mendapatkan  semua data post.",
+					"item": [
+						{
+							"name": "input url and  method correctly",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Membuat data post baru.",
+					"item": [
+						{
+							"name": "input url , body and method correctly",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"if (ResStatusCode == 201){\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ResTitle = jsonData.title;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"let ExpTitle = pm.variables.get(\"title\");\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon json return aku` , function(){\r",
+											" pm.expect(ResTitle).to.eql(ExpTitle);\r",
+											"})\r",
+											"\r",
+											"}\r",
+											"else if (ResStatusCode != 201){\r",
+											"    pm.test(`Fail to create to user`)\r",
+											"}\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mendapatkan data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "input url and  method correctly",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ResId = jsonData.id;\r",
+											"let ResPage = jsonData.page;\r",
+											"\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"let ExpPage = pm.environment.get(\"page\");\r",
+											"let ExpId = pm.environment.get(\"id\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mengubah data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "input url , body and method correctly",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,200,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,200,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"if (ResStatusCode == 200){\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ResTitle = jsonData.title;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"let ExpTitle = pm.variables.get(\"title\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon json return aku` , function(){\r",
+											" pm.expect(ResTitle).to.eql(ExpTitle);\r",
+											"})\r",
+											"\r",
+											"}\r",
+											"else if (ResStatusCode != 200){\r",
+											"    pm.test(`Fail to create to user`)\r",
+											"}\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Menghapus data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "input url and  method correctly",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Negative",
+			"item": [
+				{
+					"name": "Mendapatkan  semua data post.",
+					"item": [
+						{
+							"name": "input url is correct but method post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method put",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Membuat data post baru.",
+					"item": [
+						{
+							"name": "input url and method correctly but body is not filled in",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only userId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"  \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}}\r\n  \r\n}\r\n\r\n// { \"userId\": 11}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only title",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \r\n    \"title\": \"{{title}}\"\r\n   \r\n\r\n}\r\n\r\n// { \"title\": \"aku\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ResTitle = jsonData.title;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"let ExpTitle = pm.variables.get(\"title\");\r",
+											"\r",
+											"pm.test(`statuscodeis 201` , function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but get method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but put method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but delete method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											" \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts",
+									"host": [
+										"{{baseURL}}posts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mendapatkan data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "input base URL without path(posts) but method correctly",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}{{page}}",
+									"host": [
+										"{{baseURL}}{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method put",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mengubah data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "base URL input without path (post) but method and body are correct",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}{{page}}",
+									"host": [
+										"{{baseURL}}{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body is not filled in",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only userId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}}\r\n   \r\n\r\n}\r\n\r\n// { \"userId\": 11}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only title",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \r\n    \"title\": \"{{title}}\"\r\n  \r\n\r\n}\r\n\r\n// {\"title\": \"aku\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and method correctly but body contains only body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but get method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but post method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url and body are correct but delete method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.variables.get(\"index\")) {\r",
+											"const parse = require('csv-parse/lib/sync');\r",
+											"\r",
+											"const input = `\r",
+											"testNumber,testDesc,testType,title,body,userId,expectedStatusCode,status\r",
+											"1,Data satu,positive,aku,ganteng,11,201,OK\r",
+											"2,Data dua,positive,kamu,cantik,11,201,OK\r",
+											"`;\r",
+											"\r",
+											"    const records = parse(input, {\r",
+											"        columns: true,\r",
+											"        skip_empty_lines: true\r",
+											"        }\r",
+											"    )\r",
+											"\r",
+											"    pm.variables.set(\"index\", 0);\r",
+											"    pm.variables.set(\"records\", records);\r",
+											"}\r",
+											"\r",
+											"records = pm.variables.get(\"records\");\r",
+											"index = pm.variables.get(\"index\");\r",
+											"\r",
+											"if (index !== records.length) {\r",
+											"    for (let i of Object.entries(records[index])) {\r",
+											"        pm.variables.set(i[0], i[1]);\r",
+											"    }\r",
+											"    pm.variables.set(\"index\", ++index);\r",
+											"    pm.variables.get(\"index\")===records.length?null:postman.setNextRequest(pm.info.requestName);\r",
+											"}\r",
+											"\r",
+											"if (index == records.length) {\r",
+											"    pm.variables.unset(\"index\");\r",
+											"}\r",
+											"//define data\r",
+											"\r",
+											"//info\r",
+											"if (pm.variables.has(\"testNumber\")) {\r",
+											"    var testNumber = pm.variables.get(\"testNumber\");\r",
+											"    var testDesc = pm.variables.get(\"testDesc\");\r",
+											"    var testType = pm.variables.get(\"testType\");\r",
+											"}\r",
+											"\r",
+											"console.info(\"Test number: \"+testNumber);\r",
+											"console.info(\"Test type: \"+testType);\r",
+											"console.info(\"Test description: \"+testDesc);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": {{userId}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\"\r\n\r\n}\r\n\r\n// { \"userId\": 11,\r\n//         \"\r\n//         \"title\": \"aku\",\r\n//         \"body\": \"ganteng\"}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Menghapus data post  berdasarkan ID.",
+					"item": [
+						{
+							"name": "input base URL without path(posts) but method correctly",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}{{page}}",
+									"host": [
+										"{{baseURL}}{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 404` , function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method put",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "input url is correct but method delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"let ResStatusCode = pm.response.code;\r",
+											"let ResTime = pm.response.responseTime;\r",
+											"let ExpTime = +pm.environment.get(\"time2\");\r",
+											"\r",
+											"pm.test(`statuscodeis 200` , function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(`respon time less then ${ExpTime}` , function(){\r",
+											"    pm.expect(ResTime).to.below(ExpTime);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"   \r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}posts/{{page}}",
+									"host": [
+										"{{baseURL}}posts"
+									],
+									"path": [
+										"{{page}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
