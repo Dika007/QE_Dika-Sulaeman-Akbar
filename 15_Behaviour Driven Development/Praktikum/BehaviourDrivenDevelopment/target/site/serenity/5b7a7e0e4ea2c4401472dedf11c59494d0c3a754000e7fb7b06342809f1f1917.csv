@@ -1,0 +1,3 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Loginlinkedin","As a user I have to be able to successfully log in with a Google account","SUCCESS","2023-09-23T00:12:19.0533111+07:00[Asia/Bangkok]","0.0","0.02"
+"Loginlinkedin","As a user I have to be to failed login","SUCCESS","2023-09-23T00:12:19.0852994+07:00[Asia/Bangkok]","0.0","0.02"
