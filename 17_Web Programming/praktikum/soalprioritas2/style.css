@@ -1,0 +1,22 @@
+fieldset h1,
+p {
+  text-align: center;
+}
+
+div input,
+textarea,
+button {
+  width: 100%;
+}
+
+button {
+  background-color: #4a7995;
+  color: white;
+  padding: 10px;
+}
+
+fieldset {
+  margin-inline-start: 500px;
+  margin-inline-end: 500px;
+
+}
