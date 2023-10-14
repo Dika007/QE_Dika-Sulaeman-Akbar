@@ -1,0 +1,43 @@
+input
+buatkan test case untuk website saucedemo
+
+ouput
+1. Test login dengan user dan password yang valid
+2. Test login dengan user dan password yang tidak valid
+3. Test ketersediaan tombol 'Add to Cart' di seluruh halaman
+4. Test ketersediaan tombol 'Checkout' di halaman Cart
+5. Test ketersediaan tombol 'Continue Shopping' di halaman Cart
+6. Test ketersediaan tombol 'Checkout with PayPal' di halaman Cart
+7. Test ketersediaan tombol 'Remove' di halaman Cart
+8. Test ketersediaan tombol 'Continue Shopping' di halaman Checkout
+9. Test ketersediaan tombol 'Continue to Payment' di halaman Checkout
+10. Test ketersediaan tombol 'Place Order' di halaman Payment
+
+
+input
+buatkan test case bdd untuk website saucedemo
+
+output
+Scenario: Login dengan user dan password yang valid
+Given User memasukkan username dan password yang valid
+When User menekan tombol 'Login'
+Then Sistem harus berhasil login dan menampilkan halaman utama
+
+Scenario: Login dengan user dan password yang tidak valid
+Given User memasukkan username dan password yang tidak valid
+When User menekan tombol 'Login'
+Then Sistem harus menampilkan pesan kesalahan
+
+Scenario: Penambahan item ke dalam cart
+Given User memilih item yang akan dibeli
+When User menekan tombol 'Add to Cart'
+Then Sistem harus menampilkan item yang ditambahkan ke dalam cart
+
+Scenario: Checkout dari cart
+Given User telah menambahkan item ke dalam cart
+When User menekan tombol 'Checkout'
+Then Sistem harus menampilkan halaman Checkout
+
+Scenario: Pembayaran melalui PayPal
+Given User telah melakukan checkout
+When
