@@ -1,0 +1,126 @@
+
+input
+buatkan test fitur add to cart Samsung galaxy s6 di website demoblaze yang berisikan format dibawah ini
+Test ID 
+Test Scenario 
+Test Title 
+Test Type 
+Pre-Condition 
+Test Data 
+Test Step 
+Expected Result 
+Planned Date 
+Actual Result 
+Execution Date 
+Status 
+Documentation 
+
+output
+Test ID: ACG1
+Test Scenario: Add to Cart Feature
+Test Title:Add Samsung Galaxy S6 to cart in Demoblaze Website
+Test Type: Functional
+Pre-Condition: User must be logged in
+Test Data: Product: Samsung Galaxy S6
+Test Step:
+1. Open launch browser
+2. Enter the url demoblaze.com
+3. Login with valid credentials
+4. Search for Samsung Galaxy S6
+5. Select Samsung Galaxy S6 model
+6. Click on Add To Cart button
+Expected Result: Product should be added to cart successfully
+Planned Date: Oct 30th 2020
+Actual Result: Product added successfully
+Execution Date: Oct 30th 2020
+Status: PASS
+Documentation: Test case documentation done for Add Samsung Galaxy S6 To Cart In Demoblaze Website.
+
+
+
+
+
+
+
+input
+buatkan test fitur sign up berhasil dan data sudah ada di website demoblaze yang berisikan format dibawah ini
+Test ID 
+Test Scenario 
+Test Title 
+Test Type 
+Pre-Condition 
+Test Data 
+Test Step 
+Expected Result 
+Planned Date 
+Actual Result 
+Execution Date 
+Status 
+Documentation 
+
+output
+Test ID: LSG1
+Test Scenario: Sign Up Feature
+Test Title: Sign Up To Demoblaze Website
+Test Type: Functional
+Pre-Condition: Data with the same email already registered in database
+Test Data: Username-test@demoblaze.com and Password-testPassword
+Test Step:
+1. Open launch browser
+2. Enter the url demoblaze.com
+3. Click on Login/Sign up
+4. Enter the signup credentials- Username and Password
+5. Click on Sign Up
+Expected Result: User should NOT be able to sign up with same email address 
+Planned Date: Oct 30th 2020
+Actual Result: User failed to sign up
+Execution Date: Oct 30th 2020
+Status: PASS
+Documentation: Test case documentation done for Sign Up To Demoblaze Website.
+
+
+
+
+
+
+
+
+
+
+
+input
+buatkan test fitur login berhasil dan fitur login gagal di website demoblaze yang berisikan format dibawah ini
+Test ID 
+Test Scenario 
+Test Title 
+Test Type 
+Pre-Condition 
+Test Data 
+Test Step 
+Expected Result 
+Planned Date 
+Actual Result 
+Execution Date 
+Status 
+Documentation
+
+
+output
+Test ID: LTG1
+Test Scenario: Login Feature
+Test Title:Login To Demoblaze Website
+Test Type: Functional
+Pre-Condition: User must have valid account
+Test Data: Username-test@demoblaze.com and Password-testPassword
+Test Step:
+1. Open launch browser
+2. Enter the url demoblaze.com
+3. Click on Login/Sign up
+4. Enter login credentials- Username and Password
+5. Click on Login
+Expected Result:User should be able to login to the account successfully
+Planned Date: Oct 30th 2020
+Actual Result: User successfully Logged
+Execution Date: Oct 30th 2020
+Status: PASS
+Documentation: Test case documentation done for Login To Demoblaze Website.
