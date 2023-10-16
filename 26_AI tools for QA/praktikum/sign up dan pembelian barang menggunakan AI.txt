@@ -1,0 +1,243 @@
+
+link hasil AI
+https://chat.openai.com/share/4c650725-397a-4b9e-8755-cf4a48f9371c
+
+
+
+
+sign up
+
+Tentu, berikut adalah beberapa contoh test case, test scenario, pre-condition, test data, dan expected results untuk fitur sign-up pada website https://www.demoblaze.com/index.html:
+
+Test Case 1: Registrasi Sukses
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Klik tombol "Sign Up" untuk membuka formulir registrasi.
+Isi formulir dengan informasi valid.
+Klik tombol "Sign Up".
+Verifikasi bahwa pengguna berhasil terdaftar dan diarahkan ke halaman beranda.
+Pre-condition:
+
+Pengguna belum memiliki akun di situs tersebut.
+Test Data:
+
+Nama: [Nama Anda]
+Email: [Alamat email unik]
+Password: [Password yang memenuhi kebijakan keamanan]
+Expected Results:
+
+Pesan sukses muncul, memberikan konfirmasi bahwa registrasi berhasil.
+Pengguna dapat login menggunakan kredensial yang baru dibuat.
+Test Case 2: Registrasi dengan Email yang Sudah Digunakan
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Klik tombol "Sign Up" untuk membuka formulir registrasi.
+Isi formulir dengan informasi, termasuk email yang sudah terdaftar sebelumnya.
+Klik tombol "Sign Up".
+Verifikasi bahwa sistem memberikan pesan kesalahan bahwa email sudah digunakan.
+Pre-condition:
+
+Pengguna belum memiliki akun di situs tersebut.
+Test Data:
+
+Nama: [Nama Anda]
+Email: [Alamat email yang sudah terdaftar sebelumnya]
+Password: [Password yang memenuhi kebijakan keamanan]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa email sudah digunakan.
+Pengguna diinstruksikan untuk menggunakan alamat email yang berbeda.
+Test Case 3: Registrasi dengan Password Lemah
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Klik tombol "Sign Up" untuk membuka formulir registrasi.
+Isi formulir dengan informasi, termasuk password yang lemah.
+Klik tombol "Sign Up".
+Verifikasi bahwa sistem memberikan pesan kesalahan terkait kebijakan password yang kuat.
+Pre-condition:
+
+Pengguna belum memiliki akun di situs tersebut.
+Test Data:
+
+Nama: [Nama Anda]
+Email: [Alamat email unik]
+Password: [Password yang tidak memenuhi kebijakan keamanan]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa password tidak memenuhi kebijakan keamanan.
+Pengguna diinstruksikan untuk menggunakan password yang lebih kuat.
+Test Case 4: Registrasi tanpa Mengisi Field Wajib
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Klik tombol "Sign Up" untuk membuka formulir registrasi.
+Biarkan satu atau beberapa field wajib kosong.
+Klik tombol "Sign Up".
+Verifikasi bahwa sistem memberikan pesan kesalahan terkait field yang harus diisi.
+Pre-condition:
+
+Pengguna belum memiliki akun di situs tersebut.
+Test Data:
+
+Nama: [Kosong]
+Email: [Alamat email kosong]
+Password: [Password kosong]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa field wajib harus diisi.
+Pengguna diinstruksikan untuk mengisi semua field yang diperlukan.
+Test Case 5: Verifikasi Email Setelah Registrasi
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Daftar sebagai pengguna baru.
+Cek email yang digunakan untuk registrasi.
+Klik link verifikasi yang diberikan dalam email.
+Verifikasi bahwa akun pengguna telah diaktifkan.
+Pre-condition:
+
+Pengguna belum memiliki akun di situs tersebut.
+Test Data:
+
+Nama: [Nama Anda]
+Email: [Alamat email unik]
+Password: [Password yang memenuhi kebijakan keamanan]
+Expected Results:
+
+Email verifikasi dikirimkan dengan sukses.
+Setelah mengklik link verifikasi, pengguna diarahkan ke situs dan menerima konfirmasi bahwa akun telah diaktifkan.
+
+
+
+
+
+
+
+
+
+
+
+
+
+pembelian barang
+
+Tentu, berikut adalah beberapa contoh test case, test scenario, pre-condition, test data, dan expected results untuk fitur pembelian barang pada website https://www.demoblaze.com/index.html:
+
+Test Case 1: Pembelian Barang dengan Jumlah yang Valid
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Pilih kategori produk dan tambahkan barang ke keranjang.
+Pada keranjang, tentukan jumlah barang yang valid.
+Klik tombol "Place Order".
+Isi formulir pembelian dengan informasi yang valid.
+Klik tombol "Purchase".
+Pre-condition:
+
+Pengguna telah login ke akunnya (jika diperlukan).
+Barang yang akan dibeli tersedia di stok.
+Test Data:
+
+Jumlah barang: 2
+Alamat pengiriman: [Alamat pengiriman yang valid]
+Metode pembayaran: [Metode pembayaran yang valid]
+Expected Results:
+
+Pesan sukses muncul, memberikan konfirmasi bahwa pembelian berhasil.
+Pesanan baru terdaftar di sistem dengan status "PENDING" atau "PROCESSING".
+Test Case 2: Pembelian Barang dengan Kartu Kredit yang Tidak Valid
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Pilih kategori produk dan tambahkan barang ke keranjang.
+Pada keranjang, tentukan jumlah barang yang valid.
+Klik tombol "Place Order".
+Isi formulir pembelian dengan informasi kartu kredit yang tidak valid.
+Klik tombol "Purchase".
+Pre-condition:
+
+Pengguna telah login ke akunnya (jika diperlukan).
+Barang yang akan dibeli tersedia di stok.
+Test Data:
+
+Jumlah barang: 1
+Alamat pengiriman: [Alamat pengiriman yang valid]
+Informasi kartu kredit: [Informasi kartu kredit yang tidak valid]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa informasi kartu kredit tidak valid.
+Pesanan tidak diproses dan sistem memberikan instruksi untuk memperbaiki informasi.
+Test Case 3: Pembelian Barang tanpa Mengisi Alamat Pengiriman
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Pilih kategori produk dan tambahkan barang ke keranjang.
+Pada keranjang, tentukan jumlah barang yang valid.
+Klik tombol "Place Order".
+Biarkan alamat pengiriman kosong.
+Klik tombol "Purchase".
+Pre-condition:
+
+Pengguna telah login ke akunnya (jika diperlukan).
+Barang yang akan dibeli tersedia di stok.
+Test Data:
+
+Jumlah barang: 1
+Alamat pengiriman: [Alamat pengiriman kosong]
+Metode pembayaran: [Metode pembayaran yang valid]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa alamat pengiriman harus diisi.
+Pengguna diinstruksikan untuk mengisi alamat pengiriman.
+Test Case 4: Pembelian Barang dengan Stok Tidak Mencukupi
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Pilih kategori produk yang jumlah stoknya terbatas.
+Tentukan jumlah barang yang melebihi stok yang tersedia.
+Klik tombol "Add to cart".
+Buka keranjang dan klik tombol "Place Order".
+Isi formulir pembelian dengan informasi yang valid.
+Klik tombol "Purchase".
+Pre-condition:
+
+Pengguna telah login ke akunnya (jika diperlukan).
+Stok barang yang dipilih tidak mencukupi untuk jumlah yang dimasukkan.
+Test Data:
+
+Jumlah barang: 100 (saat stok hanya 10)
+Alamat pengiriman: [Alamat pengiriman yang valid]
+Metode pembayaran: [Metode pembayaran yang valid]
+Expected Results:
+
+Pesan kesalahan muncul, memberikan informasi bahwa jumlah barang melebihi stok yang tersedia.
+Pengguna diinstruksikan untuk mengurangi jumlah barang dalam keranjang.
+Test Case 5: Pembelian Barang tanpa Login
+Test Scenario:
+
+Buka browser dan akses https://www.demoblaze.com/index.html.
+Pilih kategori produk dan tambahkan barang ke keranjang.
+Pada keranjang, tentukan jumlah barang yang valid.
+Klik tombol "Place Order" tanpa melakukan login.
+Isi formulir pembelian dengan informasi yang valid.
+Klik tombol "Purchase".
+Pre-condition:
+
+Pengguna belum login ke akunnya.
+Test Data:
+
+Jumlah barang: 1
+Alamat pengiriman: [Alamat pengiriman yang valid]
+Metode pembayaran: [Metode pembayaran yang valid]
+Expected Results:
+
+Pengguna diarahkan untuk login sebelum melanjutkan proses pembelian.
+Pesanan tidak diproses hingga pengguna berhasil login.
+
+
+
+
+
