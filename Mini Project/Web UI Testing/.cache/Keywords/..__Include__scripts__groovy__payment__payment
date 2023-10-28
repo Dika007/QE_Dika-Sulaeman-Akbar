@@ -1,0 +1,10 @@
+{
+  "keywordFileContentHash": "9CB9AA802778DDEC6FF815AF57CD7F56",
+  "keywordClasses": [
+    {
+      "name": "payment.payment",
+      "keywordMethods": []
+    }
+  ],
+  "javadocParsed": false
+}
